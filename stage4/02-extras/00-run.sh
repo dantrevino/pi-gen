@@ -23,3 +23,22 @@ install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/.local"
 install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/.local/share"
 install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/.local/share/applications"
 install -v -o 1000 -g 1000 -d "${ROOTFS_DIR}/home/pi/.local/share/desktop-directories"
+
+# install gaia hub
+cd $HOME
+git clone git@github.com:blockstack/gaia.git
+cd gaia/hub/
+npm install
+cp ./config.sample.json ./config.json
+# Edit the config file and add in your azure or aws credentials
+npm run start
+
+cd $HOME
+sudo apt install nginx
+curl -sSL https://get.docker.com | sh
+sudo add-apt-repository -y ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-nginx
+
+mkdir $HOME/hub
+cp $HOME/gaia/hub/config.json $HOME/hub/
